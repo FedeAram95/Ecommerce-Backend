@@ -7,15 +7,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.3.12</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>backCommerce</groupId>
-    <artifactId>backCommerce</artifactId>
+    <groupId>ecommerce-Backend</groupId>
+    <artifactId>ecommerce-Backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backCommerce</name>
-    <description>eCommerce Teclab</description>
+    <name>ecommerce-Backend</name>
+    <description>ecommerce-Backend</description>
 
     <properties>
         <java.version>21</java.version>
@@ -50,7 +50,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.2</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -75,12 +74,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.3.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
                 <configuration>
                     <release>21</release>
                 </configuration>

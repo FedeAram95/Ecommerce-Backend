@@ -1,0 +1,9 @@
+# Archivo de configuración local
+# Copiá el archivo application-local.properties.example como application-local.properties y completá tus credenciales de PayPal antes de correr el proyecto.
+
+# === PayPal Sandbox ===
+paypal.client-id=TU_CLIENT_ID_AQUI
+paypal.client-secret=TU_CLIENT_SECRET_AQUI
+paypal.base-url=https://api-m.sandbox.paypal.com
+paypal.return-url=http://localhost:8000/paypal/success
+paypal.cancel-url=http://localhost:8000/paypal/cancel

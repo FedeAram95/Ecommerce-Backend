@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "CATEGORY_TYPES", schema = "CATEGORY")
+@Table(name = "CATEGORY_TYPES")
 public class Types {
 
     @Id

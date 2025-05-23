@@ -11,7 +11,7 @@ import com.backCommerce.model.enums.PaymentStatus;
 @Entity
 @Getter
 @Setter
-@Table(name = "PAYMENTS", schema = "PAYMENTS")
+@Table(name = "PAYMENTS")
 public class Payment {
 
     @Id

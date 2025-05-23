@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "SELECT * FROM \"PRODUCTS\".\"PRODUCT\" WHERE to_tsvector(\"TAGS\") @@ to_tsquery(:keyword)", nativeQuery = true)
+    @Query(value = "SELECT * FROM \"PRODUCT\" WHERE to_tsvector(\"TAGS\") @@ to_tsquery(:keyword)", nativeQuery = true)
     List<Product> findByKeyword(@Param("keyword") String keyword);
 
 }

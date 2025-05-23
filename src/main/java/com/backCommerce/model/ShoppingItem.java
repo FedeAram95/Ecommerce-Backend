@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "SHOPPING_ITEMS", schema = "SHOPPING")
+@Table(name = "SHOPPING_ITEMS")
 public class ShoppingItem {
 
     @EmbeddedId

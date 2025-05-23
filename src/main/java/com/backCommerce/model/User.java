@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "USER", schema = "USER")
+@Table(name = "USER")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "USER_ROLES",
-        schema = "USER",
         joinColumns = @JoinColumn(name = "USER_ID"),
         inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
     )

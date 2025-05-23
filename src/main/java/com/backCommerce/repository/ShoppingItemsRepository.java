@@ -15,7 +15,7 @@ public interface ShoppingItemsRepository extends JpaRepository<ShoppingItem, Sho
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM \"SHOPPING\".\"SHOPPING_ITEMS\" WHERE \"CART_ID\" = :cartId", nativeQuery = true)
+    @Query(value = "DELETE FROM \"SHOPPING_ITEMS\" WHERE \"CART_ID\" = :cartId", nativeQuery = true)
     void deleteAllByShoppingCartId(@Param("cartId") Long cartId);
 
 }

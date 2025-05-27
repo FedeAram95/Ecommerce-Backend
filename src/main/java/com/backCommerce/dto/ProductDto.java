@@ -28,7 +28,8 @@ public class ProductDto {
 
     private Long categoryId; // Se setea automáticamente al hacer GET
 
-    @NotNull(message = "Image no puede estar vacía")
+    private String categoryName; // Se setea automáticamente al hacer GET
+
     private String image;
 
     @NotNull(message = "Tags no pueden estar vacíos")

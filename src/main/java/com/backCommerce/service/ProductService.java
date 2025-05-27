@@ -1,12 +1,10 @@
 package com.backCommerce.service;
 
-import com.backCommerce.dto.ProductDto;
-import com.backCommerce.dto.ShoppingCartDto;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
+import com.backCommerce.dto.ProductDto;
 
 public interface ProductService {
 
@@ -14,10 +12,10 @@ public interface ProductService {
 
     ResponseEntity getProductById(Long id);
 
-    ResponseEntity<ProductDto> createProduct(ProductDto product, MultipartFile imageFile);
+    ResponseEntity<ProductDto> createProduct(ProductDto product);
 
     ResponseEntity<String> deleteProduct(Long id);
 
-    ResponseEntity<ProductDto> updateProduct(Long productId, ProductDto product, MultipartFile imageFile);
+    ResponseEntity<ProductDto> updateProduct(Long productId, ProductDto product);
 
 }

@@ -1,11 +1,8 @@
 package com.backCommerce.service;
 
-import com.backCommerce.dto.ProductDto;
-import com.backCommerce.model.Product;
-import com.backCommerce.repository.CategoryRepository;
-import com.backCommerce.repository.ProductRepository;
-import java.io.IOException;
-import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import com.backCommerce.dto.ProductDto;
+import com.backCommerce.model.Product;
+import com.backCommerce.repository.CategoryRepository;
+import com.backCommerce.repository.ProductRepository;
+import com.backCommerce.repository.TypesRepository;
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -27,9 +26,9 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     CategoryRepository categoryRepository;
-
-
-
+    
+    @Autowired
+    TypesRepository typesRepository;
 
     @Override
     public ResponseEntity<List<ProductDto>> getProduct(String keyword, int page, int size, Long categoryId, Long typeId) {
@@ -47,7 +46,7 @@ public class ProductServiceImp implements ProductService {
 
             if (categoryId != null) {
                 filteredProducts = filteredProducts.stream()
-                        .filter(p -> p.getCategory() != null && p.getCategory().getId().equals(categoryId))
+                        .filter(p -> p.getType().equals(categoryId))
                         .toList();
             }
             if (typeId != null) {
@@ -89,7 +88,7 @@ public class ProductServiceImp implements ProductService {
 
     @Transactional
     @Override
-    public ResponseEntity<ProductDto> createProduct(ProductDto productDto, MultipartFile imageFile) {
+    public ResponseEntity<ProductDto> createProduct(ProductDto productDto) {
         try {
             Product newProduct = new Product();
 
@@ -97,20 +96,11 @@ public class ProductServiceImp implements ProductService {
             newProduct.setDescription(productDto.getDescription());
             newProduct.setPrice(productDto.getPrice());
             newProduct.setStock(productDto.getStock());
-
-
-
-
-            if (imageFile != null && !imageFile.isEmpty()) {
-                try {
-                    String imageBase64 = Base64.getEncoder().encodeToString(imageFile.getBytes());
-                    productDto.setImage(imageBase64);
-                } catch (IOException e) {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            }
             newProduct.setImage(productDto.getImage());
 
+            if(productDto.getCategoryId() != null) {
+            	newProduct.setType(typesRepository.findById(productDto.getCategoryId()).get());
+            }
             // Guardar el nuevo producto
             productRepository.save(newProduct);
             return new ResponseEntity<>(convertToDTO(newProduct), HttpStatus.CREATED);
@@ -139,7 +129,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<ProductDto> updateProduct(Long productId, ProductDto product, MultipartFile imageFile) {
+    public ResponseEntity<ProductDto> updateProduct(Long productId, ProductDto product) {
         try {
             Product prod = convertToEntity(product);
             Optional<Product> existingProduct = productRepository.findById(productId);
@@ -149,17 +139,13 @@ public class ProductServiceImp implements ProductService {
                 updatedProduct.setDescription(prod.getDescription());
                 updatedProduct.setStock(prod.getStock());
                 updatedProduct.setPrice(prod.getPrice());
-
+                if(product.getCategoryId() != null) {
+                    updatedProduct.setType(typesRepository.findById(product.getCategoryId()).get());
+                }
                 String tags = String.join(",", prod.getTags());
                 updatedProduct.setTags(tags);
-
-                if (imageFile != null && !imageFile.isEmpty()) {
-                    try {
-                        String imageBase64 = Base64.getEncoder().encodeToString(imageFile.getBytes());
-                        updatedProduct.setImage(imageBase64); // Actualiza la imagen en el producto existente
-                    } catch (IOException e) {
-                        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
+                if(product.getImage() != null) {
+                	updatedProduct.setImage(product.getImage()); // Actualiza la imagen en el producto existente
                 }
 
                 productRepository.save(updatedProduct);
@@ -194,9 +180,10 @@ public class ProductServiceImp implements ProductService {
         productDTO.setStock(product.getStock());
         productDTO.setPrice(product.getPrice());
         productDTO.setTypeId(product.getType() != null ? product.getType().getId() : null);
-        productDTO.setCategoryId(product.getCategory() != null ? product.getCategory().getId() : null);
         productDTO.setImage(product.getImage());
         productDTO.setTags(product.getTags());
+        productDTO.setCategoryId(product.getCategory() != null ? product.getCategory().getId() : null);
+        productDTO.setCategoryName(product.getType() != null ? product.getType().getDescription() : null);
         return productDTO;
     }
 
